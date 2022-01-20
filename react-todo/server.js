@@ -1,12 +1,16 @@
 require("dotenv").config(); 
 const express = require("express"); //for local server
 const mongoose = require("mongoose"); //schema in mongodb
+const cookieParser = require("cookie-parser"); //for local server
+
 //routes
 const authRoute = require("./routes/auth")
 
 const app = express(); //starting server
 app.use(express.json());
 app.use(express.urlencoded());
+app.use(cookieParser());
+
 
 app.get("/api", (req, res) => {
   res.send("Fullstack express server");
