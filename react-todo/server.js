@@ -1,20 +1,21 @@
-require("dotenv").config(); 
+require("dotenv").config();
 const express = require("express"); //for local server
 const mongoose = require("mongoose"); //schema in mongodb
 const cookieParser = require("cookie-parser"); //for local server
 
 //routes
-const authRoute = require("./routes/auth")
+const authRoute = require("./routes/auth");
+const toDosRoute = require("./routes/todos");
 
 const app = express(); //starting server
 app.use(express.json());
 app.use(express.urlencoded());
 app.use(cookieParser());
 
-
 app.get("/api", (req, res) => {
   res.send("Fullstack express server");
 });
+
 app.post("/name", (req, res) => {
   if (req.body.name) {
     return res.json({ name: req.body.name });
@@ -23,7 +24,9 @@ app.post("/name", (req, res) => {
   }
 });
 
-app.use("/api/auth", authRoute)
+app.use("/api/auth", authRoute);
+app.use("/api/todos", toDosRoute);
+
 mongoose
   .connect(process.env.MONGO_URI)
   .then(() => {
