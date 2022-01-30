@@ -1,0 +1,60 @@
+*,
+*:after,
+*:before {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+@import './variables';
+
+body {
+  font-family: 'Lato', sans-serif;
+  background: $background-color;
+  color: $text-color;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 700;
+}
+
+.App {
+  transition: all 0.5s ease;
+  min-height: 100vh;
+}
+
+.App.active {
+  margin-left: 20rem;
+
+  @media screen and (max-width: $breakpoint-tablet) {
+    margin-left: 0;
+  }
+}
+
+.main-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.mode-instructions {
+  text-align: center;
+  font-size: 0.75rem;
+  font-weight: 400;
+  padding-bottom: 1rem;
+  margin-top: auto;
+  // letter-spacing: 0.5px;
+
+  strong {
+    font-weight: 900;
+  }
+}
+
+// Components
+@import "./darkmode";
+@import "./player";
+@import "./song";
+@import "./library";
+@import "./nav";
+@import "./scrollbar";
+@import "./animations";

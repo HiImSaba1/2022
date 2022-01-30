@@ -1,0 +1,18 @@
+* {
+  scrollbar-width: thin;
+  scrollbar-color: $primary-color;
+}
+
+*:not(.track)::-webkit-scrollbar {
+  width: 7px;
+}
+
+*::-webkit-scrollbar-track {
+  background: $secondary-background-color;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-image: $primary-gradient;
+  border-radius: 7px;
+  border: transparent;
+}

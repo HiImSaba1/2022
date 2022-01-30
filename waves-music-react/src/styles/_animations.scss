@@ -1,0 +1,17 @@
+.animated {
+  &.pulse {
+    animation: pulse 0.85s infinite;
+  }
+}
+
+@keyframes pulse {
+  0%{
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(2);
+  }
+  100% {
+    transform: scale(1);
+  }
+}

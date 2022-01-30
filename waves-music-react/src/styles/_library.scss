@@ -1,0 +1,69 @@
+.library {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 20rem;
+  height: 100%;
+  overflow-y: scroll;
+  background: $background-color;
+  box-shadow: 2px 2px 50px rgb(94, 94, 94);
+  transform: translateX(-100%);
+  transition: all 0.5s ease;
+  opacity: 0;
+
+  @if dark-mode {
+    box-shadow: 2px 2px 50px #000;
+  }
+
+  @media (max-width: $breakpoint-tablet) {
+    width: 100%;
+  }
+
+  h2 {
+    padding: 1rem 2rem;
+  }
+
+  .library-song {
+    display: flex;
+    align-items: center;
+    padding: 1rem 2rem;
+
+    .song-description {
+      padding-left: 1rem;
+
+      h3 {
+        font-size: 1rem;
+        color: $primary-color;
+
+        svg {
+          margin-left: 1rem;
+        }
+      }
+
+      h4 {
+        font-size: 0.75rem;
+      }
+    }
+
+    img {
+      width: 30%;
+    }
+
+    &:hover {
+      background: $secondary-background-color;
+      cursor: pointer;
+    }
+  }
+
+  .selected {
+    background: $secondary-background-color;
+    &:hover {
+      cursor: default;
+    }
+  }
+
+  &.active {
+    opacity: 1;
+    transform: translateX(0%);
+  }
+}
