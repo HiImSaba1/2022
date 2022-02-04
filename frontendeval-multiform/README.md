@@ -1,3 +1,24 @@
+# Frontendeval.com Medium Difficulty Multiform
+ Requirements: 
+ Your PM has asked you to create the most annoying signup form in the world: a form that has 4 fields but on a series of 4 different screens. Your name, email, date of birth, and password will be entered separately into the site:
+
+The specs are as follows:
+
+1.Back links appear on every screen other than the first one, going back to the step the user was just on
+
+2.Input is required on every screen prior to proceeding to the next.
+
+3.On the last screen, provide a submit button that calls a handleSubmit({ name: ..., email: ..., password: ... }) function passing in the values of all the fields
+
+4.Show a success screen
+
+# Some Hints
+The tricky part of this problem is keeping track of the state. How do you track what screen you’re on and what’s been submitted so far?
+
+If you’re not using a framework, how do you swap in the different form fields? Do you reuse the same form fields and update the label text/input types, or do you swap in entirely new templates?
+
+How do you ensure a good user experience? When do you validate the input? How do you handle going back to a previous screen on the form?
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
