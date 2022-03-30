@@ -1,5 +1,7 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;700&display=swap');
 * {
   box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
 }
 
 .container {
@@ -12,7 +14,7 @@
   align-items: center;
   padding: 10px;
   width: 100%;
-  overflow: hidden;
+  overflow: auto;
 }
 .player {
   position: relative;
@@ -21,6 +23,7 @@
   height: 30px;
   width: 100%;
   margin-right: 10px;
+
 }
 .player-health {
   background-color: #fbfbfb;
@@ -45,6 +48,9 @@
   border-radius: 10px;
   margin-right: 10px;
   flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .enemy {
   position: relative;
@@ -65,4 +71,22 @@
   right: 0;
   bottom: 0;
   left: 0;
+}
+.displayResult {
+    position: absolute;
+    color: #fbfbfb;
+    /* display: flex; */
+    align-items: center;
+    justify-content: center;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    display: none;
+    font-size: 2rem;
+    letter-spacing: 5px;
+    font-weight: 500;
+}
+.displayResult::before {
+    content: '';
 }
