@@ -5,70 +5,29 @@ canvas.height = 576;
 canvas.width = 1024;
 
 c.fillRect(0, 0, canvas.width, canvas.height);
+const gravity = 1;
 
-const gravity = 0.7;
-
-class Sprite {
-  constructor({ position, velocity, color = "#909CC2", offset }) {
-    this.position = position;
-    this.velocity = velocity;
-    this.width = 60;
-    this.height = 160;
-    this.lastKey;
-    this.attackBox = {
-      position: {
-        x: this.position.x,
-        y: this.position.y,
-      },
-      offset,
-      width: 110,
-      height: 50,
-    };
-    this.color = color;
-    this.isAttacking;
-    this.health = 100;
-  }
-
-  draw() {
-    c.fillStyle = this.color;
-    c.fillRect(this.position.x, this.position.y, this.width, this.height);
-
-    //attack box
-    if (this.isAttacking) {
-      c.fillStyle = "#901CA9";
-      c.fillRect(
-        this.attackBox.position.x,
-        this.attackBox.position.y,
-        this.attackBox.width,
-        this.attackBox.height
-      );
-    }
-  }
-
-  update() {
-    this.draw();
-    this.attackBox.position.x = this.position.x + this.attackBox.offset.x;
-    this.attackBox.position.y = this.position.y;
-
-    this.position.x += this.velocity.x;
-    this.position.y += this.velocity.y;
-    if (this.position.y + this.height + this.velocity.y >= canvas.height) {
-      this.velocity.y = 0;
-    } else {
-      this.velocity.y += gravity;
-    }
-  }
-  attack() {
-    this.isAttacking = true;
-    setTimeout(() => {
-      this.isAttacking = false;
-    }, 100);
-  }
-}
-
-const player = new Sprite({
+const background = new Sprite({
   position: {
-    x: 100,
+    x: 0,
+    y: 0,
+  },
+  imageSrc: "./img/background.png",
+});
+
+const shop = new Sprite({
+  position: {
+    x: 600,
+    y: 128,
+  },
+  imageSrc: "./img/shop.png",
+  scale: 2.75,
+  framesMax: 6,
+});
+
+const player = new Fighter({
+  position: {
+    x: 0,
     y: 0,
   },
   velocity: {
@@ -79,9 +38,38 @@ const player = new Sprite({
     x: 0,
     y: 0,
   },
+  imageSrc: "./img/samuraiMack/Idle.png",
+  framesMax: 8,
+  scale: 2.5,
+  offset: {
+    x: 165,
+    y: 147,
+  },
+  sprites: {
+    idle: {
+      imageSrc: "./img/samuraiMack/Idle.png",
+      framesMax: 8,
+    },
+    run: {
+      imageSrc: "./img/samuraiMack/Run.png",
+      framesMax: 8,
+    },
+    jump: {
+      imageSrc: "./img/samuraiMack/Jump.png",
+      framesMax: 2,
+    },
+    fall: {
+      imageSrc: "./img/samuraiMack/Fall.png",
+      framesMax: 2,
+    },
+    attack1: {
+      imageSrc: "./img/samuraiMack/Attack1.png",
+      framesMax: 6,
+    },
+  },
 });
 
-const enemy = new Sprite({
+const enemy = new Fighter({
   position: {
     x: 400,
     y: 100,
@@ -95,6 +83,43 @@ const enemy = new Sprite({
     x: -50,
     y: 0,
   },
+  imageSrc: "./img/kenji/Idle.png",
+  framesMax: 4,
+  scale: 2.5,
+  offset: {
+    x: 165,
+    y: 157,
+  },
+  sprites: {
+    idle: {
+      imageSrc: "./img/kenji/Idle.png",
+      framesMax: 4,
+    },
+    run: {
+      imageSrc: "./img/kenji/Run.png",
+      framesMax: 8,
+    },
+    jump: {
+      imageSrc: "./img/kenji/Jump.png",
+      framesMax: 2,
+    },
+    fall: {
+      imageSrc: "./img/kenji/Fall.png",
+      framesMax: 2,
+    },
+    attack1: {
+      imageSrc: "./img/kenji/Attack1.png",
+      framesMax: 4,
+    },
+  },
+  attackBox: {
+    offset: {
+      x: 0,
+      y: 0, 
+    }, 
+    width: 100,
+    height: 50,
+  }
 });
 
 const keys = {
@@ -112,46 +137,15 @@ const keys = {
   },
 };
 
-function rectangularCollision({ rect1, rect2 }) {
-  return (
-    rect1.attackBox.position.x + rect1.attackBox.width >= rect2.position.x &&
-    rect1.attackBox.position.x <= rect2.position.x + rect2.width &&
-    rect1.attackBox.position.y + rect1.attackBox.height >= rect2.position.y &&
-    rect1.attackBox.position.y <= rect2.position.y + rect2.height
-  );
-}
-//Show game based on health after timer ends
-function determineWinner({ player, enemy, timerId }) {
-  clearTimeout(timerId);
-  document.querySelector("#displayResult").style.display = "flex";
-  if (player.health === enemy.health) {
-    document.querySelector("#displayResult").innerHTML = "Tie";
-  } else if (player.health > enemy.health) {
-    document.querySelector("#displayResult").innerHTML = "Player 1 Won";
-  } else if (enemy.health > player.health) {
-    document.querySelector("#displayResult").innerHTML = "Player 2 Won";
-  }
-}
-//timer
-let timer = 5;
-let timerId;
-function decreaseTimer() {
-  if (timer > 0) {
-    timerId = setTimeout(decreaseTimer, 1000);
-    timer--;
-    document.querySelector("#timer").innerHTML = timer;
-  }
-  //Determine winner
-  if (timer === 0) {
-    determineWinner({ player, enemy });
-  }
-}
 decreaseTimer();
 
 function animate() {
   window.requestAnimationFrame(animate);
   c.fillStyle = "#232020";
   c.fillRect(0, 0, canvas.width, canvas.height);
+
+  background.update();
+  shop.update();
 
   player.update();
   enemy.update();
@@ -160,16 +154,38 @@ function animate() {
   enemy.velocity.x = 0;
 
   //player movement
+
   if (keys.a.pressed && player.lastKey === "a") {
     player.velocity.x = -5;
+    player.switchSprite("run");
   } else if (keys.d.pressed && player.lastKey === "d") {
     player.velocity.x = 5;
+    player.switchSprite("run");
+  } else {
+    player.switchSprite("idle");
   }
+  //player jump
+  if (player.velocity.y < 0) {
+    player.switchSprite("jump");
+  } else if (player.velocity.y > 0) {
+    player.switchSprite("fall");
+  }
+
   //enemy movement
   if (keys.ArrowLeft.pressed && enemy.lastKey === "ArrowLeft") {
     enemy.velocity.x = -5;
+    enemy.switchSprite("run");
   } else if (keys.ArrowRight.pressed && enemy.lastKey === "ArrowRight") {
     enemy.velocity.x = 5;
+    enemy.switchSprite("run");
+  }else {
+    enemy.switchSprite("idle");
+  }
+  //enemy jump
+  if (enemy.velocity.y < 0) {
+    enemy.switchSprite("jump");
+  } else if (enemy.velocity.y > 0) {
+    enemy.switchSprite("fall");
   }
 
   //detect collision
@@ -234,7 +250,7 @@ window.addEventListener("keydown", (e) => {
       enemy.velocity.y = -20;
       break;
     case "ArrowDown":
-      enemy.isAttacking = false;
+      enemy.attack()
       break;
   }
 });
